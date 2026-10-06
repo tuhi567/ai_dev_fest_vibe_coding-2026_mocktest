@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Smart Escape — interactive evacuation route simulator." />
+  <title>Smart Escape | Evacuation Route Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">⌁</div>
+      <div><h1>Smart Escape</h1><p id="subtitle">Interactive evacuation route simulator</p></div>
+    </div>
+    <div class="top-actions">
+      <span class="dataset-pill" id="datasetName">No building loaded</span>
+      <button class="ghost-btn" id="langBtn" type="button">বাংলা</button>
+      <button class="ghost-btn" id="helpBtn" type="button">Help</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="panel import-panel">
+        <div class="panel-heading"><span>01</span><h2 id="importTitle">Import building</h2></div>
+        <p id="importHint">Load a building.json file. The app validates it locally in your browser.</p>
+        <label class="file-btn"><span id="fileBtnText">Choose JSON file</span><input id="fileInput" type="file" accept="application/json,.json" /></label>
+        <button class="secondary-btn" id="sampleBtn" type="button">Load sample building</button>
+        <div class="validation" id="validation" role="status">Waiting for a building file.</div>
+      </section>
+
+      <section class="panel controls-panel">
+        <div class="panel-heading"><span>02</span><h2 id="controlsTitle">Route controls</h2></div>
+        <label class="field-label" for="startSelect" id="startLabel">Starting location</label>
+        <select id="startSelect" disabled><option>No locations loaded</option></select>
+        <label class="field-label" for="hazardSelect" id="hazardLabel">Hazard target</label>
+        <select id="hazardSelect" disabled><option>No locations loaded</option></select>
+        <div class="control-grid">
+          <button class="control-btn" id="blockNodeBtn" disabled>Block selected</button>
+          <button class="control-btn" id="unblockNodeBtn" disabled>Unblock selected</button>
+          <button class="control-btn" id="toggleEdgeBtn" disabled>Block corridor</button>
+          <button class="control-btn" id="toggleExitBtn" disabled>Close exit</button>
+        </div>
+        <button class="reset-btn" id="resetBtn" disabled>↺ Reset initial state</button>
+      </section>
+
+      <section class="panel legend-panel">
+        <div class="panel-heading"><span>03</span><h2 id="legendTitle">Legend</h2></div>
+        <div class="legend"><span class="dot room"></span><span id="roomLegend">Room</span><span class="dot junction"></span><span id="junctionLegend">Junction</span><span class="dot exit"></span><span id="exitLegend">Exit</span></div>
+        <div class="legend"><span class="line route"></span><span id="routeLegend">Selected route</span><span class="line blocked"></span><span id="blockedLegend">Blocked</span></div>
+      </section>
+
+      <section class="panel status-panel">
+        <div class="panel-heading"><span>04</span><h2 id="statusTitle">Current result</h2></div>
+        <div class="status-card" id="statusCard"><div class="status-icon">●</div><div><strong id="statusText">Load a building to calculate a route.</strong><p id="statusDetail">The lowest-cost accessible exit will appear here.</p></div></div>
+        <div class="route-summary" id="routeSummary" hidden>
+          <div><span id="routeLabel">Route</span><strong id="routeNodes">—</strong></div>
+          <div><span id="exitLabel">Exit</span><strong id="routeExit">—</strong></div>
+          <div><span id="costLabel">Total cost</span><strong id="routeCost">—</strong></div>
+        </div>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <div class="map-header">
+        <div><span class="eyebrow" id="mapEyebrow">LIVE SIMULATION</span><h2 id="mapTitle">Building map</h2></div>
+        <div class="map-stats"><span id="nodeCount">0 nodes</span><span id="edgeCount">0 corridors</span></div>
+      </div>
+      <div class="map-wrap" id="mapWrap">
+        <svg id="map" viewBox="0 0 1000 620" aria-label="Building map"></svg>
+        <div class="empty-state" id="emptyState"><div class="empty-icon">⌁</div><h3 id="emptyTitle">Your map appears here</h3><p id="emptyText">Import building.json or load the sample building to start.</p></div>
+      </div>
+      <div class="map-footer"><span id="footerHint">Click a room or junction to use it as the starting location. Use the controls to simulate hazards.</span><span class="safe-note">Simulation only • Not certified evacuation planning</span></div>
+    </section>
+  </main>
+
+  <dialog id="helpDialog">
+    <div class="dialog-card"><button class="close-btn" id="closeHelp">×</button><h2 id="helpTitle">How to use Smart Escape</h2><ol id="helpList"><li>Import a valid building.json or load the sample.</li><li>Select an unblocked room or junction.</li><li>Block/unblock nodes, corridors, or exits to simulate hazards.</li><li>The route recalculates immediately using corridor costs.</li><li>Reset returns all hazards to the file's original initial state.</li></ol></div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
